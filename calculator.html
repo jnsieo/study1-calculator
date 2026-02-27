@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+  <head>
+    <title>계산기</title>
+  </head>
+  <body>
+    <h1 id="title">계산기</h1>
+    <h2 id="display"></h2>
+
+    <button class="num">1</button>
+    <button class="num">2</button>
+    <button class="num">3</button>
+    <button class="num">4</button>
+    <button class="num">5</button>
+    <button class="num">6</button>
+    <button class="num">7</button>
+    <button class="num">8</button>
+    <button class="num">9</button>
+    <button class="num">0</button>
+
+    <button id="plus">+</button>
+    <button id="result">=</button>
+
+    <script>
+      const display = document.querySelector("#display");
+      const numbers = document.querySelectorAll(".num");
+      const plus = document.querySelector("#plus");
+      const result = document.querySelector("#result");
+
+      let expression = "";
+
+      numbers.forEach(function (button) {
+        button.addEventListener("click", function () {
+          expression += button.textContent;
+          display.textContent = expression;
+        });
+      });
+
+      plus.addEventListener("click", function () {
+        expression += "+";
+        display.textContent = expression;
+      });
+
+      result.addEventListener("click", function () {
+        const answer = eval(expression);
+        display.textContent = answer;
+        expression = answer.toString();
+      });
+    </script>
+  </body>
+</html>
