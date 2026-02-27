@@ -18,42 +18,67 @@
     <button class="num">9</button>
     <button class="num">0</button>
 
-    <button id="plus">+</button>
+    <button class="operator">+</button>
+    <button class="operator">-</button>
+    <button class="operator">*</button>
+    <button class="operator">/</button>
+
     <button id="result">=</button>
 
     <script>
       const display = document.querySelector("#display");
       const numbers = document.querySelectorAll(".num");
-      const plus = document.querySelector("#plus");
+      const operators = document.querySelectorAll(".operator");
       const result = document.querySelector("#result");
 
-      let expression = "";
+      let currentNumber = "";
+      let previousNumber = "";
+      let operator = null;
 
       numbers.forEach(function (button) {
         button.addEventListener("click", function () {
-          expression += button.textContent;
-          display.textContent = expression;
+          currentNumber += button.textContent;
+
+          if (operator === null) {
+            display.textContent = currentNumber;
+          } else {
+            display.textContent =
+              previousNumber + " " + operator + " " + currentNumber;
+          }
         });
       });
 
-      plus.addEventListener("click", function () {
-        expression += "+";
-        display.textContent = expression;
+      operators.forEach(function (button) {
+        button.addEventListener("click", function () {
+          if (previousNumber === "") {
+            previousNumber = currentNumber;
+          } else {
+            previousNumber = calculate(previousNumber, currentNumber, operator);
+          }
+          operator = button.textContent;
+          currentNumber = "";
+          display.textContent = previousNumber + " " + operator;
+        });
       });
-
       result.addEventListener("click", function () {
-        const parts = expression.split("+");
+        if (previousNumber === "" || currentNumber === "") return;
 
-        let total = 0;
+        const answer = calculate(previousNumber, currentNumber, operator);
+        display.textContent = answer;
 
-        parts.forEach(function (num) {
-          total += Number(num);
-        });
-
-        display.textContent = total;
-
-        expression = total.toString();
+        currentNumber = answer.toString();
+        previousNumber = "";
+        operator = null;
       });
+      function calculate(a, b, operator) {
+        a = Number(a);
+        b = Number(b);
+
+        if (operator === "+") return a + b;
+        if (operator === "-") return a - b;
+        if (operator === "*") return a * b;
+        if (operator === "/") return a / b;
+      }
     </script>
   </body>
 </html>
