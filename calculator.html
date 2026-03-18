@@ -25,11 +25,16 @@
 
     <button id="result">=</button>
 
+    <button id="allclear">AC</button>
+    <button id="clear">C</button>
+
     <script>
       const display = document.querySelector("#display");
       const numbers = document.querySelectorAll(".num");
       const operators = document.querySelectorAll(".operator");
       const result = document.querySelector("#result");
+      const allclear = document.querySelector("#allclear");
+      const clear = document.querySelector("#clear");
 
       let currentNumber = "";
       let previousNumber = "";
@@ -79,6 +84,27 @@
         if (operator === "*") return a * b;
         if (operator === "/") return a / b;
       }
+      allclear.addEventListener("click", function () {
+        currentNumber = "";
+        previousNumber = "";
+        operator = null;
+
+        display.textContent = "";
+      });
+      clear.addEventListener("click", function () {
+        if (operator === null) {
+          currentNumber = "";
+          display.textContent = "";
+        } else if (operator !== null && currentNumber === "") {
+          currentNumber = previousNumber;
+          previousNumber = "";
+          operator = null;
+          display.textContent = currentNumber;
+        } else if (operator !== null && currentNumber !== "") {
+          currentNumber = "";
+          display.textContent = previousNumber + " " + operator;
+        }
+      });
     </script>
   </body>
 </html>
